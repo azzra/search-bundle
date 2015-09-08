@@ -1,7 +1,7 @@
 # Purjus Search Bundle
 
 Simple wide site search base on event system.
-
+Results are grouped by category so the results can be organized.
 
 ## Edit composer.json
 
@@ -30,7 +30,7 @@ composer require purjus/search-bundle dev-master
 
 ```yml
 #app/config/config.yml
-
+```
 
 
 ## Update AppKernel.php
@@ -39,3 +39,6 @@ composer require purjus/search-bundle dev-master
 // PURJUS SEARCH BUNDLE
 new Purjus\SearchBundle\PurjusSearchBundle(),
 ```
+
+# TODO
+* define a search category & search entity
