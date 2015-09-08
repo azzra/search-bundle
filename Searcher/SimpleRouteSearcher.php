@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Router;
  * @author m4rc3l
  *
  */
-class DemoSearcher implements SearcherInterface
+class SimpleRouteSearcher implements SearcherInterface
 {
 
     /**

@@ -1,12 +1,12 @@
 parameters:
     purjus_search.manager.class: Purjus\SearchBundle\Manager\SearchManager
-    purjus_search.searcher.demo.class: Purjus\SearchBundle\Searcher\DemoSearcher
+    purjus_search.searcher.simple_route.class: Purjus\SearchBundle\Searcher\SimpleRouteSearcher
 
 
 services:
 
     purjus_search.searcher.demo:
-        class: %purjus_search.searcher.demo.class%
+        class: %purjus_search.searcher.simple_route.class%
         tags:
             - { name: purjus_search.searcher }
         arguments:
