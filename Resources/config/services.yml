@@ -1,9 +1,20 @@
 parameters:
     purjus_search.manager.class: Purjus\SearchBundle\Manager\SearchManager
     purjus_search.searcher.simple_route.class: Purjus\SearchBundle\Searcher\SimpleRouteSearcher
-
+    purjus_search.get_set_method_normalizer.class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
 
 services:
+
+    get_set_method_normalizer:
+        class: %purjus_search.get_set_method_normalizer.class%
+        tags:
+            - { name: serializer.normalizer }
+
+    purjus_search.manager:
+        class: %purjus_search.manager.class%
+        arguments:
+            - %purjus_search.min_length%
+            - %purjus_search.max_entries%
 
     purjus_search.searcher.demo:
         class: %purjus_search.searcher.simple_route.class%
@@ -11,8 +22,3 @@ services:
             - { name: purjus_search.searcher }
         arguments:
             - @router
-            
-    purjus_search.manager:
-        class: %purjus_search.manager.class%
-        arguments:
-            - %purjus_search.min_length%

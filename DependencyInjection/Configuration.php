@@ -17,14 +17,23 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
+
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('purjus_search');
 
         $rootNode
             ->children()
-                ->scalarNode('min_length')
+                ->integerNode('min_length')
                     ->defaultValue(3)
+                    ->min(1)
                     ->info('The minimum length of a string to be searched.')
+                ->end()
+            ->end()
+            ->children()
+                ->integerNode('max_entries')
+                    ->defaultValue(5)
+                    ->min(1)
+                    ->info('The maximum of an Entry by Group.')
                 ->end()
             ->end();
 

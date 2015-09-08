@@ -1,12 +1,15 @@
 <?php
 namespace Purjus\SearchBundle\Searcher;
 
-use Purjus\SearchBundle\Convention\SearcherInterface;
+use Purjus\SearchBundle\Model\SearcherInterface;
 use Symfony\Component\Routing\Router;
+use Purjus\SearchBundle\Entity\Group;
+use Purjus\SearchBundle\Entity\Entry;
 
 /**
  *
- * @author m4rc3l
+ * @author Purjus Communication
+ * @author Tom
  *
  */
 class SimpleRouteSearcher implements SearcherInterface
@@ -25,25 +28,29 @@ class SimpleRouteSearcher implements SearcherInterface
     /**
      * {@inheritdoc}
      */
-    public function search($term)
+    public function search($term, array $options = array())
     {
 
         $routes = $this->router->getRouteCollection()->all();
 
-        $results = array();
+        $group = new Group('Routes', $this->router->generate('homepage'));
+
+        $counter = 0;
         foreach ($routes as $name => $route) {
+
             if (stripos($name, $term) !== false) {
-                $results[] = $name;
+                $entity = new Entry($name, "http://");
+                $group->addEntry($entity);
+                $counter++;
             }
+
+            if ($counter >= $options['max_entries']) {
+                break;
+            }
+
         }
 
-        return array(
-            'type' => array(
-                'name' => 'ma_cat',
-                'desc' => 'yeayay'
-            ),
-            'results' => $results
-        );
+        return $group;
 
     }
 }

@@ -2,7 +2,9 @@
 
 namespace Purjus\SearchBundle\Manager;
 
-use Purjus\SearchBundle\Convention\SearcherInterface;
+use Purjus\SearchBundle\Model\SearcherInterface;
+use Purjus\SearchBundle\Model\SearcherManagerInterface;
+
 /**
  * Event manager
  *
@@ -10,18 +12,18 @@ use Purjus\SearchBundle\Convention\SearcherInterface;
  * @author Tom
  *
  */
-class SearchManager
+class SearchManager implements SearcherManagerInterface
 {
-
-    /**
-     * @var string The needle
-     */
-    protected $term;
 
     /**
      * @var integer Minimum length of a search term.
      */
     protected $minLength;
+
+    /**
+     * @var integer Maximum entries
+     */
+    protected $maxEntries;
 
     /**
      * @var array Searchers
@@ -34,15 +36,14 @@ class SearchManager
     protected $results = array();
 
 
-    public function __construct()
+    public function __construct($minLength, $maxEntries)
     {
-//         $this->minLength = $minLength;
+        $this->minLength = $minLength;
+        $this->maxEntries = $maxEntries;
     }
 
     /**
-     * Add a searcher
-     *
-     * @param SearcherInterface $searcher
+     * {@inheritdoc}
      */
     public function addSearcher(SearcherInterface $searcher)
     {
@@ -50,26 +51,21 @@ class SearchManager
     }
 
     /**
-     * @param string $term
+     * {@inheritdoc}
      */
-    public function setTerm($term)
+    public function getResults($term, array $options = array())
     {
-        $this->term = $term;
-        return $this;
-    }
 
-    /**
-     * Call all the searchers for the search method
-     *
-     * @return array
-     */
-    public function getResults()
-    {
+        if (strlen($term) < $this->minLength) {
+            return array();
+        }
 
         $results = array();
 
         foreach ($this->searchers as $searcher) {
-            $results[] = $searcher->search($this->term);
+            $results[] = $searcher->search($term, array(
+                'max_entries' => $this->maxEntries,
+            ));
         }
 
         $this->results = $results;

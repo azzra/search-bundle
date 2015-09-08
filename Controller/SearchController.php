@@ -35,19 +35,20 @@ class SearchController extends PurjusController
         $dispatcher = $this->get('event_dispatcher');
 
         $event = new SearchEvent($term);
-
         $dispatcher->dispatch(PurjusSearchEvents::SEARCH_BEGIN, $event);
 
         /** @var SearchManager $manager */
         $manager = $this->get('purjus_search.manager');
-        $manager->setTerm($term);
 
-        $results = $manager->getResults();
-        $event->setResults($results);
+        $results = $manager->getResults($term, array(
+            'min_length' => $this->getParameter('purjus_search.min_length'),
+            'max_entries' => $this->getParameter('purjus_search.max_entries'),
+        ));
 
+        $event->setResults($results); // set result in the event, so we can interract
         $dispatcher->dispatch(PurjusSearchEvents::SEARCH_END, $event);
 
-        return new JsonResponse($results);
+        return new JsonResponse($this->get('serializer')->normalize($results));
 
     }
 

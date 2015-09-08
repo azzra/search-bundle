@@ -1,6 +1,6 @@
 <?php
 
-namespace Purjus\SearchBundle\Convention;
+namespace Purjus\SearchBundle\Model;
 
 interface SearcherInterface
 {
@@ -10,6 +10,6 @@ interface SearcherInterface
      *
      * @return array
      */
-    public function search($term);
+    public function search($term, array $options = array());
 
 }

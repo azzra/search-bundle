@@ -23,6 +23,7 @@ class PurjusSearchExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('purjus_search.min_length', $config['min_length']);
+        $container->setParameter('purjus_search.max_entries', $config['max_entries']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
