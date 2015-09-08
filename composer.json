@@ -1,0 +1,27 @@
+{
+    "name": "purjus/search-bundle",
+    "description": "Simple wide site search base on event system.",
+    "type": "symfony-bundle",
+    "keywords": ["search", "symfony", "bundle"],
+    "require": {
+        "symfony/event-dispatcher": "^2.3"
+    },
+    "require-dev": {
+		"symfony/var-dumper": "^2.6"
+    },
+    "autoload": {
+        "psr-4": { "Purjus\\SearchBundle\\": "" }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tom",
+            "email": "t.vitureau@purjus.fr"
+        }
+    ],
+    "extra": {
+        "branch-alias": {
+            "stable": "dev-master"
+        }
+    }
+}
