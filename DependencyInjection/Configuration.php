@@ -20,9 +20,13 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('purjus_search');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode
+            ->children()
+                ->scalarNode('min_length')
+                    ->defaultValue(3)
+                    ->info('The minimum length of a string to be searched.')
+                ->end()
+            ->end();
 
         return $treeBuilder;
     }

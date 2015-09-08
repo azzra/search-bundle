@@ -1,1 +1,18 @@
+parameters:
+    purjus_search.manager.class: Purjus\SearchBundle\Manager\SearchManager
+    purjus_search.searcher.demo.class: Purjus\SearchBundle\Searcher\DemoSearcher
+
+
 services:
+
+    purjus_search.searcher.demo:
+        class: %purjus_search.searcher.demo.class%
+        tags:
+            - { name: purjus_search.searcher }
+        arguments:
+            - @router
+            
+    purjus_search.manager:
+        class: %purjus_search.manager.class%
+        arguments:
+            - %purjus_search.min_length%
