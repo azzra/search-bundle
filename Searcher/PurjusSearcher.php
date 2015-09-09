@@ -21,12 +21,20 @@ abstract class PurjusSearcher implements SearcherInterface
      */
     protected $options = array();
 
+    /**
+     * @var integer number of items
+     */
     protected $counter = 0;
 
+
     /**
-     * {@inheritdoc}
+     * Add an $entry to a $group until $this->options['max_entries'] is reached.
+     *
+     * @param Group $group
+     * @param Entry $entry
+     * @return boolean
      */
-    public function addToMax(Group $group, Entry $entry)
+    protected function addToMax(Group $group, Entry $entry)
     {
 
         if ($this->counter >= $this->options['max_entries']) {

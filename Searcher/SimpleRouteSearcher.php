@@ -12,7 +12,7 @@ use Purjus\SearchBundle\Entity\Entry;
  * @author Tom
  *
  */
-class SimpleRouteSearcher implements SearcherInterface
+class SimpleRouteSearcher extends PurjusSearcher
 {
 
     /**
@@ -31,21 +31,21 @@ class SimpleRouteSearcher implements SearcherInterface
     public function search($term, array $options = array())
     {
 
-        $routes = $this->router->getRouteCollection()->all();
-
+        $this->options = $options;
         $group = new Group('Routes', $this->router->generate('homepage'));
 
-        $counter = 0;
+        $routes = $this->router->getRouteCollection()->all();
+
         foreach ($routes as $name => $route) {
 
             if (stripos($name, $term) !== false) {
-                $entity = new Entry($name, "http://");
-                $group->addEntry($entity);
-                $counter++;
-            }
 
-            if ($counter >= $options['max_entries']) {
-                break;
+                $entry = new Entry($name, $this->router->generate('homepage'));
+
+                if (!$this->addToMax($group, $entry)) {
+                    break;
+                }
+
             }
 
         }
