@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+
+    <encoding>utf8</encoding>
+
+    <parser>
+        <target>Resources/cache/phpdoc</target>
+    </parser>
+    
+    <transformer>
+        <target>Resources/phpdoc</target>
+    </transformer>
+    
+    <markers>
+        <item>TODO</item>
+        <item>FIXME</item>
+        <item>PURJUS</item>
+    </markers>
+    
+    <files>
+        <directory>.</directory>
+        <ignore>Resources/*</ignore>
+    </files>
+    
+</phpdoc>
