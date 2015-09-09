@@ -33,7 +33,6 @@ class SearchController extends PurjusController
     public function searchAction(Request $request, $term)
     {
 
-        dump($this->_format);
         /** @var EventDispatcher $dispatcher */
         $dispatcher = $this->get('event_dispatcher');
 
@@ -51,7 +50,9 @@ class SearchController extends PurjusController
         $event->setResults($results); // set result in the event, so we can interract
         $dispatcher->dispatch(PurjusSearchEvents::SEARCH_END, $event);
 
-        return $this->get('serializer')->normalize($results);
+        $params = array('results' => $this->get('serializer')->normalize($results));
+
+        return $this->render('PurjusSearchBundle:Search:search.html.twig', $params);
 
     }
 

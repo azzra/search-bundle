@@ -18,16 +18,8 @@ final class PurjusSearchEvents
     const SEARCH_BEGIN = 'purjus_search.begin';
 
     /**
-     * @var string Results found
-     */
-    const SEARCH_FOUND = 'purjus_search.found';
-
-
-    /**
-     * @var string Results found
+     * @var string Search end
      */
     const SEARCH_END = 'purjus_search.end';
-
-
 
 }

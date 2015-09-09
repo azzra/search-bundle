@@ -24,7 +24,6 @@ class SearchEvent extends Event
      */
     protected $config;
 
-
     /**
      * @var array The results
      */
