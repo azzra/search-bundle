@@ -4,7 +4,6 @@ namespace Purjus\SearchBundle\Manager;
 
 use Purjus\SearchBundle\Model\SearcherInterface;
 use Purjus\SearchBundle\Model\SearcherManagerInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Search manager. Will call all the searcher.
@@ -15,11 +14,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 class SearchManager implements SearcherManagerInterface
 {
-
-    /**
-     * @var RequestStack $requestStack
-     */
-    protected $requestStack;
 
     /**
      * @var integer Minimum length of a search term
@@ -42,9 +36,8 @@ class SearchManager implements SearcherManagerInterface
     protected $results = array();
 
 
-    public function __construct(RequestStack $requestStack, $minLength, $maxEntries)
+    public function __construct($minLength, $maxEntries)
     {
-        $this->requestStack = $requestStack;
         $this->minLength = $minLength;
         $this->maxEntries = $maxEntries;
     }
@@ -72,7 +65,6 @@ class SearchManager implements SearcherManagerInterface
         foreach ($this->searchers as $searcher) {
             $results[] = $searcher->search($term, array(
                 'max_entries' => $this->maxEntries,
-                'locale' => $this->requestStack->getCurrentRequest()->getLocale()
             ));
         }
 
