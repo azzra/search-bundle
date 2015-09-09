@@ -5,7 +5,7 @@
     "keywords": ["search", "symfony", "bundle"],
     "require": {
         "symfony/event-dispatcher": "^2.3",
-        "composer require symfony/property-access": "^2.3"
+        "symfony/property-access": "^2.7"
     },
     "require-dev": {
 		"symfony/var-dumper": "^2.6"
