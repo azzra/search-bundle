@@ -12,6 +12,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Purjus\SearchBundle\Event\SearchEvent;
 use Purjus\SearchBundle\Event\PurjusSearchEvents;
 use Purjus\SearchBundle\Manager\SearchManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * Search controller.
@@ -26,11 +27,13 @@ class SearchController extends PurjusController
     /**
      * @Method({"GET", "POST"})
      * @Route("/result/{term}", name="purjus_search")
+     * @Template()
      * @param Request $request
      */
     public function searchAction(Request $request, $term)
     {
 
+        dump($this->_format);
         /** @var EventDispatcher $dispatcher */
         $dispatcher = $this->get('event_dispatcher');
 
@@ -48,7 +51,7 @@ class SearchController extends PurjusController
         $event->setResults($results); // set result in the event, so we can interract
         $dispatcher->dispatch(PurjusSearchEvents::SEARCH_END, $event);
 
-        return new JsonResponse($this->get('serializer')->normalize($results));
+        return $this->get('serializer')->normalize($results);
 
     }
 
