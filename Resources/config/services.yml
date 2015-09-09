@@ -13,6 +13,7 @@ services:
     purjus_search.manager:
         class: %purjus_search.manager.class%
         arguments:
+            - @request_stack
             - %purjus_search.min_length%
             - %purjus_search.max_entries%
 
