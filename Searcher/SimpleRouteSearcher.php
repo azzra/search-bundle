@@ -7,6 +7,8 @@ use Purjus\SearchBundle\Entity\Group;
 use Purjus\SearchBundle\Entity\Entry;
 
 /**
+ * Demo searcher, looks in all the route and perform
+ * a simple text search in the name.
  *
  * @author Purjus Communication
  * @author Tom
@@ -20,13 +22,24 @@ class SimpleRouteSearcher extends PurjusSearcher
      */
     protected $router;
 
+    /**
+     * Constructor.
+     *
+     * @param Router $router
+     */
     public function __construct(Router $router)
     {
         $this->router = $router;
     }
 
+
     /**
      * {@inheritdoc}
+     *
+     * @see \Purjus\SearchBundle\Model\SearcherInterface::search()
+     * @param string $term
+     * @param array $options
+     * @return Group
      */
     public function search($term, array $options = array())
     {

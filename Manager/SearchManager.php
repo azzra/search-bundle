@@ -36,6 +36,12 @@ class SearchManager implements SearcherManagerInterface
     protected $results = array();
 
 
+    /**
+     * Constructor.
+     *
+     * @param integer $minLength
+     * @param integer$maxEntries
+     */
     public function __construct($minLength, $maxEntries)
     {
         $this->minLength = $minLength;
@@ -44,6 +50,8 @@ class SearchManager implements SearcherManagerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param SearcherInterface searcher
      */
     public function addSearcher(SearcherInterface $searcher)
     {
@@ -52,6 +60,10 @@ class SearchManager implements SearcherManagerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param string $term
+     * @param array $options
+     * @return Group[]
      */
     public function getResults($term, array $options = array())
     {
@@ -73,4 +85,5 @@ class SearchManager implements SearcherManagerInterface
         return $results;
 
     }
+
 }

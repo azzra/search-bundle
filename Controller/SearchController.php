@@ -25,10 +25,15 @@ class SearchController extends PurjusController
 {
 
     /**
+     * Display results or send them serialized.
+     *
      * @Method({"GET", "POST"})
      * @Route("/result/{term}", name="purjus_search")
      * @Template()
+     *
      * @param Request $request
+     * @param $term
+     * @return Response|array
      */
     public function searchAction(Request $request, $term)
     {

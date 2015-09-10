@@ -5,7 +5,7 @@ namespace Purjus\SearchBundle\Event;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Search event
+ * Search event.
  *
  * @author Purjus Communication
  * @author Tom
@@ -41,6 +41,7 @@ class SearchEvent extends Event
     }
 
     /**
+     * Get term
      *
      * @return string
      */
@@ -50,6 +51,7 @@ class SearchEvent extends Event
     }
 
     /**
+     * Get config
      *
      * @return array
      */
@@ -59,6 +61,8 @@ class SearchEvent extends Event
     }
 
     /**
+     * Get results
+     *
      * @return the array
      */
     public function getResults()
@@ -70,6 +74,7 @@ class SearchEvent extends Event
      * So we can changes the results is needed
      *
      * @param array $results
+     * @return SearchEvent
      */
     public function setResults(array $results)
     {

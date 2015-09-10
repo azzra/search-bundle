@@ -19,6 +19,8 @@ class PurjusSearchBundle extends Bundle
 
     /**
      * {@inheritdoc}
+     *
+     * @param ContainerBuilder $container
      */
     public function build(ContainerBuilder $container)
     {

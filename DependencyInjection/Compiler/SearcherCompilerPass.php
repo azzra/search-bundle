@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * CompilerPass for searchers.
  * It adds all the searcher services tagged 'purjus_search.searcher'
- * and add them to the @see SearchManager
+ * and add them to the @see SearchManager.
  *
  * @author Purjus Communication
  * @author Tom
@@ -19,6 +19,8 @@ class SearcherCompilerPass implements CompilerPassInterface
 {
     /**
      * {@inheritDoc}
+     *
+     * @param ContainerBuilder $container
      */
     public function process(ContainerBuilder $container)
     {

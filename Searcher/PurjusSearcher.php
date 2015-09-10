@@ -17,7 +17,7 @@ abstract class PurjusSearcher implements SearcherInterface
 {
 
     /**
-     * @var array $options
+     * @var array options
      */
     protected $options = array();
 
