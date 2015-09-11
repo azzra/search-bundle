@@ -7,7 +7,6 @@ use Purjus\SymfonyBundle\Controller\PurjusController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Purjus\SearchBundle\Event\SearchEvent;
 use Purjus\SearchBundle\Event\PurjusSearchEvents;
@@ -52,7 +51,7 @@ class SearchController extends PurjusController
             'max_entries' => $this->getParameter('purjus_search.max_entries'),
         ));
 
-        $event->setResults($results); // set result in the event, so we can interract
+        $event->setResults($results); // set result in the event, so we can interact
         $dispatcher->dispatch(PurjusSearchEvents::SEARCH_END, $event);
 
         $params = array('results' => $this->get('serializer')->normalize($results));

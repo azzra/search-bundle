@@ -2,7 +2,6 @@
 namespace Purjus\SearchBundle\Searcher;
 
 use Purjus\SearchBundle\Model\SearcherInterface;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Purjus\SearchBundle\Entity\Group;
 use Purjus\SearchBundle\Entity\Entry;
 

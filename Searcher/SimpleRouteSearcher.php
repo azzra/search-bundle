@@ -1,7 +1,6 @@
 <?php
 namespace Purjus\SearchBundle\Searcher;
 
-use Purjus\SearchBundle\Model\SearcherInterface;
 use Symfony\Component\Routing\Router;
 use Purjus\SearchBundle\Entity\Group;
 use Purjus\SearchBundle\Entity\Entry;
