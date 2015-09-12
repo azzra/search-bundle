@@ -4,6 +4,7 @@ namespace Purjus\SearchBundle\Searcher;
 use Symfony\Component\Routing\Router;
 use Purjus\SearchBundle\Entity\Group;
 use Purjus\SearchBundle\Entity\Entry;
+use Purjus\SearchBundle\Model\SearcherInterface;
 
 /**
  * Demo searcher, looks in all the route and perform
@@ -13,7 +14,7 @@ use Purjus\SearchBundle\Entity\Entry;
  * @author Tom
  *
  */
-class SimpleRouteSearcher extends PurjusSearcher
+class SimpleRouteSearcher extends PurjusSearcher implements SearcherInterface
 {
 
     /**
@@ -24,10 +25,12 @@ class SimpleRouteSearcher extends PurjusSearcher
     /**
      * Constructor.
      *
+     * @param string $domain
      * @param Router $router
      */
-    public function __construct(Router $router)
+    public function __construct($domain, Router $router)
     {
+        parent::__construct($domain);
         $this->router = $router;
     }
 

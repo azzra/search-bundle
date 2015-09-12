@@ -27,7 +27,7 @@ class SearchController extends PurjusController
      * Display results or send them serialized.
      *
      * @Method({"GET", "POST"})
-     * @Route("/result/{term}", name="purjus_search")
+     * @Route("/{term}", name="purjus_search")
      * @Template()
      *
      * @param Request $request
@@ -46,9 +46,11 @@ class SearchController extends PurjusController
         /** @var SearchManager $manager */
         $manager = $this->get('purjus_search.manager');
 
+        $domains = (array) $request->get('domains');
+
         $results = $manager->getResults($term, array(
-            'min_length' => $this->getParameter('purjus_search.min_length'),
             'max_entries' => $this->getParameter('purjus_search.max_entries'),
+            'domains' => $domains,
         ));
 
         $event->setResults($results); // set result in the event, so we can interact

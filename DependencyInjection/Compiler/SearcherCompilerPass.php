@@ -33,7 +33,6 @@ class SearcherCompilerPass implements CompilerPassInterface
 
         $taggedServices = $container->findTaggedServiceIds('purjus_search.searcher');
 
-
         foreach ($taggedServices as $id => $attributes) {
             $definition->addMethodCall('addSearcher', array(new Reference($id)));
         }

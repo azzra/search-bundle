@@ -21,4 +21,5 @@ services:
         tags:
             - { name: purjus_search.searcher }
         arguments:
+            - route # domain of search
             - @router

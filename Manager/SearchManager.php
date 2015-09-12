@@ -68,16 +68,22 @@ class SearchManager implements SearcherManagerInterface
     public function getResults($term, array $options = array())
     {
 
-        if (strlen($term) < $this->minLength) {
-            return array();
-        }
-
         $results = array();
+        $domains = $options['domains'];
 
         foreach ($this->searchers as $searcher) {
-            $results[] = $searcher->search($term, array(
-                'max_entries' => $this->maxEntries,
-            ));
+
+            // if domains is not specified or the current searcher domain is in the searchables domains
+            if (empty($domains) || in_array($searcher->getDomain(), $domains)) {
+
+                $results[] = $searcher->search($term, array_merge(
+                        array('max_entries' => $this->maxEntries,),
+                        $options
+                    )
+                );
+
+            }
+
         }
 
         $this->results = $results;

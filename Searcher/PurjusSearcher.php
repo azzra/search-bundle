@@ -16,6 +16,11 @@ abstract class PurjusSearcher implements SearcherInterface
 {
 
     /**
+     * @var string $domain
+     */
+    protected $domain;
+
+    /**
      * @var array options
      */
     protected $options = array();
@@ -25,6 +30,15 @@ abstract class PurjusSearcher implements SearcherInterface
      */
     protected $counter = 0;
 
+    /**
+     * Constructor
+     *
+     * @param string $domain
+     */
+    public function __construct($domain)
+    {
+        $this->domain = $domain;
+    }
 
     /**
      * Add an $entry to a $group until $this->options['max_entries'] is reached.
@@ -48,25 +62,13 @@ abstract class PurjusSearcher implements SearcherInterface
     }
 
     /**
-     * Get options
+     * Get domain
      *
-     * @return the array
+     * @return string
      */
-    public function getOptions()
+    public function getDomain()
     {
-        return $this->options;
-    }
-
-    /**
-     * Set options
-     *
-     * @param array $options
-     * @return PurjusSearcher
-     */
-    public function setOptions(array $options)
-    {
-        $this->options = $options;
-        return $this;
+        return $this->domain;
     }
 
 

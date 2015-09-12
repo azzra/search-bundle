@@ -42,7 +42,7 @@ new Purjus\SearchBundle\PurjusSearchBundle(),
 purjus_search:
     resource: "@PurjusSearchBundle/Controller/"
     type:     annotation
-    prefix:   /search/
+    prefix:   /search
 ```
 
 5. Configuration
