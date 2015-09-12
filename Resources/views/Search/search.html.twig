@@ -1,7 +1,15 @@
 {% extends "::base.html.twig" %}
 
+{% set head_title %}
+    {% trans %}
+        Results for "%term%"
+    {% endtrans %}
+{% endset %}
+
 {% block content %}
+
     {% block purjus_search_results %}
         {{ dump(results) }}
     {% endblock %}
+
 {% endblock %}

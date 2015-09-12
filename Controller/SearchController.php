@@ -2,8 +2,6 @@
 
 namespace Purjus\SearchBundle\Controller;
 
-
-use Purjus\SymfonyBundle\Controller\PurjusController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,6 +10,7 @@ use Purjus\SearchBundle\Event\SearchEvent;
 use Purjus\SearchBundle\Event\PurjusSearchEvents;
 use Purjus\SearchBundle\Manager\SearchManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Purjus\SymfonyBundle\Controller\PurjusTranslatableController;
 
 /**
  * Search controller.
@@ -20,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
  * @author Tom
  *
  */
-class SearchController extends PurjusController
+class SearchController extends PurjusTranslatableController
 {
 
     /**
@@ -43,22 +42,66 @@ class SearchController extends PurjusController
         $event = new SearchEvent($term);
         $dispatcher->dispatch(PurjusSearchEvents::SEARCH_BEGIN, $event);
 
+        $results = $this->getResults($request, $term);
+
+        $event->setResults($results); // set result in the event, so we can interact
+        $dispatcher->dispatch(PurjusSearchEvents::SEARCH_END, $event);
+
+        $params = array(
+            'term' => $term,
+            'results' => $this->get('serializer')->normalize($results),
+            'lang_alternates' => $this->getLangAlternates($request, $term),
+        );
+
+        return $this->render('PurjusSearchBundle:Search:search.html.twig', $params);
+
+    }
+
+    /**
+     * Get results
+     *
+     * @param Request $request
+     * @param unknown $term
+     * @return \Purjus\SearchBundle\Manager\Group[]
+     */
+    protected function getResults(Request $request, $term)
+    {
+
         /** @var SearchManager $manager */
         $manager = $this->get('purjus_search.manager');
 
         $domains = (array) $request->get('domains');
 
-        $results = $manager->getResults($term, array(
+        return $manager->getResults($term, array(
             'max_entries' => $this->getParameter('purjus_search.max_entries'),
             'domains' => $domains,
         ));
 
-        $event->setResults($results); // set result in the event, so we can interact
-        $dispatcher->dispatch(PurjusSearchEvents::SEARCH_END, $event);
+    }
 
-        $params = array('results' => $this->get('serializer')->normalize($results));
+    /**
+     * Get lang alternate for a search term,
+     * keeping all query paramers
+     *
+     * @param Request $request
+     * @param unknown $term
+     * @return array[hrefLang] = href
+     */
+    protected function getLangAlternates(Request $request, $term)
+    {
 
-        return $this->render('PurjusSearchBundle:Search:search.html.twig', $params);
+        $router = $this->get('router');
+        $params = $request->query->all();
+
+        $alternates = array();
+        foreach ($this->_getOthersLocales($request->getLocale()) as $locale) {
+            $alternates[$locale] = $router->generate('purjus_search', array_merge(
+                array('term' => $term, '_locale' => $locale),
+                $params
+            ));
+        }
+
+        return $alternates;
 
     }
 
