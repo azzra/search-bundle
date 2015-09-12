@@ -94,7 +94,7 @@ class SearchController extends PurjusTranslatableController
         $params = $request->query->all();
 
         $alternates = array();
-        foreach ($this->_getOthersLocales($request->getLocale()) as $locale) {
+        foreach ($this->getTranslatablesLocales($request->getLocale()) as $locale) {
             $alternates[$locale] = $router->generate('purjus_search', array_merge(
                 array('term' => $term, '_locale' => $locale),
                 $params
