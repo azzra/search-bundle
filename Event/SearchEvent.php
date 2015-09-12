@@ -2,7 +2,7 @@
 
 namespace Purjus\SearchBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Purjus\SymfonyBundle\Event\PurjusEvent;
 
 /**
  * Search event.
@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\Event;
  * @author Tom
  *
  */
-class SearchEvent extends Event
+class SearchEvent extends PurjusEvent
 {
 
     /**

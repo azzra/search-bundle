@@ -10,7 +10,7 @@ use Purjus\SearchBundle\Event\SearchEvent;
 use Purjus\SearchBundle\Event\PurjusSearchEvents;
 use Purjus\SearchBundle\Manager\SearchManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Purjus\SymfonyBundle\Controller\PurjusTranslatableController;
+use Purjus\AdminBundle\Controller\PurjusTranslatableController;
 
 /**
  * Search controller.
