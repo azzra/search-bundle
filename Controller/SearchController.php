@@ -39,7 +39,7 @@ class SearchController extends PurjusTranslatableRESTController
             ->setTemplateVar('results') // name of the "main" variable in the template
             ->setTemplateData(array(
                 'term' => $term,
-                'lang_alternates' => $this->getLangAlternates($request, $term),
+                'lang_alternates' => $this->getGenericLangAlternates($request, array('term' => $term)),
             ));
 
         return $this->handleView($view);
@@ -89,30 +89,5 @@ class SearchController extends PurjusTranslatableRESTController
 
     }
 
-    /**
-     * Get lang alternates for a search term,
-     * keeping all query paramers
-     *
-     * @param Request $request
-     * @param unknown $term
-     * @return array[hrefLang] = href
-     */
-    protected function getLangAlternates(Request $request, $term)
-    {
-
-        $router = $this->get('router');
-        $params = $request->query->all();
-
-        $alternates = array();
-        foreach ($this->getTranslatablesLocales($request->getLocale()) as $locale) {
-            $alternates[$locale] = $router->generate('purjus_search', array_merge(
-                array('term' => $term, '_locale' => $locale),
-                $params
-            ));
-        }
-
-        return $alternates;
-
-    }
 
 }
