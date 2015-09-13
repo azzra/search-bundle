@@ -13,13 +13,15 @@ use Purjus\SearchBundle\Manager\SearchManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Purjus\AdminBundle\Controller\PurjusTranslatableController;
 use FOS\RestBundle\Controller\Annotations\Get;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
+use FOS\RestBundle\Controller\Annotations\NamePrefix;
 
 /**
  * Search controller.
  *
  * @author Purjus Communication
  * @author Tom
+ *
+ * @NamePrefix("api_")
  *
  */
 class SearchController extends FOSRestController
@@ -28,12 +30,15 @@ class SearchController extends FOSRestController
     /**
      * Display results or send them serialized.
      *
+     * @Get("results")
+     *
      * @param Request $request
-     * @param $term
      * @return Response|array
      */
-    public function getSearchAction(Request $request, $term)
+    public function resultAction(Request $request)
     {
+
+        $term = $request->query->get('term');
 
         /** @var EventDispatcher $dispatcher */
         $dispatcher = $this->get('event_dispatcher');
