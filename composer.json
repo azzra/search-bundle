@@ -4,7 +4,9 @@
     "type": "symfony-bundle",
     "keywords": ["search", "symfony", "bundle"],
     "require": {
-        "symfony/event-dispatcher": "^2.3"
+        "symfony/event-dispatcher": "^2.3",
+        "purjus/symfony-bundle": "dev-master",
+        "purjus/admin-bundle": "dev-master"
     },
     "require-dev": {
 		"symfony/var-dumper": "^2.6"

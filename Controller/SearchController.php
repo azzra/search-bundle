@@ -4,7 +4,6 @@ namespace Purjus\SearchBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Purjus\SearchBundle\Manager\SearchManager;
-use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\NoRoute;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
