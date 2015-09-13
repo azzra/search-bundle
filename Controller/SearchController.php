@@ -40,6 +40,7 @@ class SearchController extends PurjusTranslatableRESTController
             ->setTemplateData(array(
                 'term' => $term,
                 'lang_alternates' => $this->getGenericLangAlternates($request, array('term' => $term)),
+                'form_action' => $this->get('router')->generate('purjus_search_post'),
             ));
 
         return $this->handleView($view);
@@ -48,7 +49,7 @@ class SearchController extends PurjusTranslatableRESTController
 
     /**
      * @Post("search")
-     * @RequestParam(name="term", requirements=".+", allowBlank=false, strict=true, description="Search term.")
+     * @RequestParam(name="term", requirements=".+", allowBlank=false, description="Search term.")
      *
      * @param Request $request
      * @param ParamFetcher $paramFetcher
@@ -56,8 +57,17 @@ class SearchController extends PurjusTranslatableRESTController
      */
     public function postSearchAction(Request $request, ParamFetcher $paramFetcher)
     {
+
+        $term = $paramFetcher->get('term');
+
+        // if the form is posted, redirect to the GET route witht the term
+        if ('html' === $request->getRequestFormat()) {
+            $view = $this->routeRedirectView('purjus_search', array('term' => $term), 301);
+            return $this->handleView($view);
+        }
+
         $response = $this->forward('PurjusSearchBundle:Search:search', array(
-            'term'  => $paramFetcher->get('term'),
+            'term'  => $term,
         ));
 
         return $response;
