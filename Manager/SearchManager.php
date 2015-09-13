@@ -43,6 +43,10 @@ class SearchManager implements SearcherManagerInterface
      */
     protected $results = array();
 
+    /**
+     * @var string $term used by the search block
+     */
+    protected $term;
 
     /**
      * Constructor.
@@ -81,6 +85,7 @@ class SearchManager implements SearcherManagerInterface
         $event = new SearchEvent($term, $options);
         $this->dispatcher->dispatch(SearchEvent::SEARCH_BEGIN, $event);
 
+        $this->term = $term;
         $results = $this->doSearch($term, $options);
 
         $event->setResults($results); // set result in the event, so we can interact
@@ -121,5 +126,16 @@ class SearchManager implements SearcherManagerInterface
 
         return $results;
     }
+
+    /**
+     * Get term
+     *
+     * @return string
+     */
+    public function getTerm()
+    {
+        return $this->term;
+    }
+
 
 }

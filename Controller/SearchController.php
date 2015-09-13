@@ -40,11 +40,23 @@ class SearchController extends PurjusTranslatableRESTController
             ->setTemplateData(array(
                 'term' => $term,
                 'lang_alternates' => $this->getGenericLangAlternates($request, array('term' => $term)),
-                'form_action' => $this->get('router')->generate('purjus_search_post'),
             ));
 
         return $this->handleView($view);
 
+    }
+
+    /**
+     * The search block. Get the term from the search manager.
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function renderBlockSearchAction()
+    {
+        return $this->render('PurjusSearchBundle:Block:search.html.twig', array(
+                'form_action' => $this->get('router')->generate('purjus_search_post'),
+                'term' => $this->get('purjus_search.manager')->getTerm(),
+        ));
     }
 
     /**
