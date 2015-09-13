@@ -39,10 +39,22 @@ new Purjus\SearchBundle\PurjusSearchBundle(),
 
 ```yml
 # app/config/routing.yml
+
+# here, prefix "search" is set by the app
 purjus_search:
-    resource: "@PurjusSearchBundle/Controller/"
-    type:     annotation
-    prefix:   /search
+    path:      /search/{term}
+    defaults:  { _controller: PurjusSearchBundle:Search:search }
+    requirements:
+        _method: GET
+        term: .+
+
+# /!\ here, the prefix "search" is set by the route,
+# not by the app like the previous one.
+# for an API, it should be ok
+purjus_search_api:
+    type:     rest
+    resource: Purjus\SearchBundle\Controller\SearchController
+    prefix: /api
 ```
 
 5. Configuration

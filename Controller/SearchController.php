@@ -3,9 +3,6 @@
 namespace Purjus\SearchBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Purjus\SearchBundle\Event\SearchEvent;
-use Purjus\SearchBundle\Event\PurjusSearchEvents;
 use Purjus\SearchBundle\Manager\SearchManager;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\NoRoute;
@@ -36,20 +33,11 @@ class SearchController extends PurjusTranslatableRESTController
     public function searchAction(Request $request, $term)
     {
 
-        /** @var EventDispatcher $dispatcher */
-        $dispatcher = $this->get('event_dispatcher');
-
-        $event = new SearchEvent($term);
-        $dispatcher->dispatch(PurjusSearchEvents::SEARCH_BEGIN, $event);
-
         $results = $this->getResults($request, $term);
-
-        $event->setResults($results); // set result in the event, so we can interact
-        $dispatcher->dispatch(PurjusSearchEvents::SEARCH_END, $event);
 
         $view = $this->view($results, 200)
             ->setTemplate('PurjusSearchBundle:Search:search.html.twig')
-            ->setTemplateVar('results') // name of the variable in the template
+            ->setTemplateVar('results') // name of the "main" variable in the template
             ->setTemplateData(array(
                 'term' => $term,
                 'lang_alternates' => $this->getLangAlternates($request, $term),
@@ -60,7 +48,6 @@ class SearchController extends PurjusTranslatableRESTController
     }
 
     /**
-     *
      * @Post("search")
      * @RequestParam(name="term", requirements=".+", allowBlank=false, strict=true, description="Search term.")
      *
@@ -87,12 +74,16 @@ class SearchController extends PurjusTranslatableRESTController
     protected function getResults(Request $request, $term)
     {
 
+        if (strlen($term) < $this->getParameter('purjus_search.min_length')) {
+            return array();
+        }
+
         /** @var SearchManager $manager */
         $manager = $this->get('purjus_search.manager');
 
         $domains = (array) $request->get('domains');
 
-        return $manager->getResults($term, array(
+        return $manager->search($term, array(
             'max_entries' => $this->getParameter('purjus_search.max_entries'),
             'domains' => $domains,
         ));

@@ -26,6 +26,6 @@ interface SearcherManagerInterface
      * @param array $options
      * @return Group[]
      */
-    public function getResults($term, array $options = array());
+    public function search($term, array $options = array());
 
 }
