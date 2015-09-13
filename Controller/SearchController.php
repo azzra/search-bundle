@@ -2,22 +2,17 @@
 
 namespace Purjus\SearchBundle\Controller;
 
-use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Purjus\SearchBundle\Event\SearchEvent;
 use Purjus\SearchBundle\Event\PurjusSearchEvents;
 use Purjus\SearchBundle\Manager\SearchManager;
-use Purjus\AdminBundle\Controller\PurjusTranslatableController;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\NoRoute;
 use FOS\RestBundle\Controller\Annotations\Post;
-use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\Request\ParamFetcher;
-use FOS\RestBundle\View\View;
+use Purjus\AdminBundle\Controller\PurjusTranslatableRESTController;
 
 /**
  * Search controller.
@@ -27,7 +22,7 @@ use FOS\RestBundle\View\View;
  *
  *
  */
-class SearchController extends PurjusTranslatableController
+class SearchController extends PurjusTranslatableRESTController
 {
 
     /**
@@ -52,16 +47,15 @@ class SearchController extends PurjusTranslatableController
         $event->setResults($results); // set result in the event, so we can interact
         $dispatcher->dispatch(PurjusSearchEvents::SEARCH_END, $event);
 
-        $view = View::create($results, 200);
-        $view->setTemplate('PurjusSearchBundle:Search:search.html.twig')
+        $view = $this->view($results, 200)
+            ->setTemplate('PurjusSearchBundle:Search:search.html.twig')
             ->setTemplateVar('results') // name of the variable in the template
             ->setTemplateData(array(
                 'term' => $term,
                 'lang_alternates' => $this->getLangAlternates($request, $term),
-            ))
-        ;
+            ));
 
-        return $this->get('fos_rest.view_handler')->handle($view);
+        return $this->handleView($view);
 
     }
 
@@ -106,7 +100,7 @@ class SearchController extends PurjusTranslatableController
     }
 
     /**
-     * Get lang alternate for a search term,
+     * Get lang alternates for a search term,
      * keeping all query paramers
      *
      * @param Request $request
