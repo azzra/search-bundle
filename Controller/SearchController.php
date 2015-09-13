@@ -2,6 +2,7 @@
 
 namespace Purjus\SearchBundle\Controller;
 
+use FOS\RestBundle\Controller\FOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +12,8 @@ use Purjus\SearchBundle\Event\PurjusSearchEvents;
 use Purjus\SearchBundle\Manager\SearchManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Purjus\AdminBundle\Controller\PurjusTranslatableController;
+use FOS\RestBundle\Controller\Annotations\Get;
+use FOS\RestBundle\Controller\Annotations\RouteResource;
 
 /**
  * Search controller.
@@ -19,21 +22,17 @@ use Purjus\AdminBundle\Controller\PurjusTranslatableController;
  * @author Tom
  *
  */
-class SearchController extends PurjusTranslatableController
+class SearchController extends FOSRestController
 {
 
     /**
      * Display results or send them serialized.
      *
-     * @Method({"GET", "POST"})
-     * @Route("/{term}", name="purjus_search")
-     * @Template()
-     *
      * @param Request $request
      * @param $term
      * @return Response|array
      */
-    public function searchAction(Request $request, $term)
+    public function getSearchAction(Request $request, $term)
     {
 
         /** @var EventDispatcher $dispatcher */
@@ -47,13 +46,22 @@ class SearchController extends PurjusTranslatableController
         $event->setResults($results); // set result in the event, so we can interact
         $dispatcher->dispatch(PurjusSearchEvents::SEARCH_END, $event);
 
-        $params = array(
-            'term' => $term,
-            'results' => $this->get('serializer')->normalize($results),
-            'lang_alternates' => $this->getLangAlternates($request, $term),
-        );
+        $view = $this->view($results, 200)
+            ->setTemplate('PurjusSearchBundle:Search:search.html.twig')
+            ->setTemplateVar('results') // name of the variable in the template
+            ->setTemplateData(array('term' => $term))
+        ;
 
-        return $this->render('PurjusSearchBundle:Search:search.html.twig', $params);
+        return $this->handleView($view);
+
+//         $params = array(
+//             'term' => $term,
+//             'results' => $this->get('serializer')->normalize($results),
+//             'lang_alternates' => $this->getLangAlternates($request, $term),
+//         );
+
+
+        //return $this->render('', $params);
 
     }
 
