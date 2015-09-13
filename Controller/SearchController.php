@@ -3,17 +3,21 @@
 namespace Purjus\SearchBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Purjus\SearchBundle\Event\SearchEvent;
 use Purjus\SearchBundle\Event\PurjusSearchEvents;
 use Purjus\SearchBundle\Manager\SearchManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Purjus\AdminBundle\Controller\PurjusTranslatableController;
 use FOS\RestBundle\Controller\Annotations\Get;
-use FOS\RestBundle\Controller\Annotations\NamePrefix;
+use FOS\RestBundle\Controller\Annotations\NoRoute;
+use FOS\RestBundle\Controller\Annotations\Post;
+use FOS\RestBundle\Controller\Annotations\QueryParam;
+use FOS\RestBundle\Controller\Annotations\RequestParam;
+use FOS\RestBundle\Request\ParamFetcher;
+use FOS\RestBundle\View\View;
 
 /**
  * Search controller.
@@ -21,24 +25,21 @@ use FOS\RestBundle\Controller\Annotations\NamePrefix;
  * @author Purjus Communication
  * @author Tom
  *
- * @NamePrefix("api_")
  *
  */
-class SearchController extends FOSRestController
+class SearchController extends PurjusTranslatableController
 {
 
     /**
      * Display results or send them serialized.
      *
-     * @Get("results")
+     * @NoRoute
      *
      * @param Request $request
      * @return Response|array
      */
-    public function resultAction(Request $request)
+    public function searchAction(Request $request, $term)
     {
-
-        $term = $request->query->get('term');
 
         /** @var EventDispatcher $dispatcher */
         $dispatcher = $this->get('event_dispatcher');
@@ -51,23 +52,35 @@ class SearchController extends FOSRestController
         $event->setResults($results); // set result in the event, so we can interact
         $dispatcher->dispatch(PurjusSearchEvents::SEARCH_END, $event);
 
-        $view = $this->view($results, 200)
-            ->setTemplate('PurjusSearchBundle:Search:search.html.twig')
+        $view = View::create($results, 200);
+        $view->setTemplate('PurjusSearchBundle:Search:search.html.twig')
             ->setTemplateVar('results') // name of the variable in the template
-            ->setTemplateData(array('term' => $term))
+            ->setTemplateData(array(
+                'term' => $term,
+                'lang_alternates' => $this->getLangAlternates($request, $term),
+            ))
         ;
 
-        return $this->handleView($view);
+        return $this->get('fos_rest.view_handler')->handle($view);
 
-//         $params = array(
-//             'term' => $term,
-//             'results' => $this->get('serializer')->normalize($results),
-//             'lang_alternates' => $this->getLangAlternates($request, $term),
-//         );
+    }
 
+    /**
+     *
+     * @Post("search")
+     * @RequestParam(name="term", requirements=".+", allowBlank=false, strict=true, description="Search term.")
+     *
+     * @param Request $request
+     * @param ParamFetcher $paramFetcher
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function postSearchAction(Request $request, ParamFetcher $paramFetcher)
+    {
+        $response = $this->forward('PurjusSearchBundle:Search:search', array(
+            'term'  => $paramFetcher->get('term'),
+        ));
 
-        //return $this->render('', $params);
-
+        return $response;
     }
 
     /**
