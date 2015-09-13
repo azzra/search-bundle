@@ -15,6 +15,16 @@ class SearchEvent extends PurjusEvent
 {
 
     /**
+     * @var string Start of a search
+     */
+    const SEARCH_BEGIN = 'purjus_search.begin';
+
+    /**
+     * @var string Search end
+     */
+    const SEARCH_END = 'purjus_search.end';
+
+    /**
      * @var string Search term
      */
     protected $term;

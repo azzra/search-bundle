@@ -13,6 +13,7 @@ services:
     purjus_search.manager:
         class: %purjus_search.manager.class%
         arguments:
+            - @event_dispatcher
             - %purjus_search.min_length%
             - %purjus_search.max_entries%
 

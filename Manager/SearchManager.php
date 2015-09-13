@@ -4,6 +4,9 @@ namespace Purjus\SearchBundle\Manager;
 
 use Purjus\SearchBundle\Model\SearcherInterface;
 use Purjus\SearchBundle\Model\SearcherManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Purjus\SearchBundle\Event\SearchEvent;
+use Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher;
 
 /**
  * Search manager. Will call all the searcher.
@@ -16,6 +19,11 @@ class SearchManager implements SearcherManagerInterface
 {
 
     /**
+     * @var EventDispatcher $dispatcher
+     */
+    protected $dispatcher;
+
+    /**
      * @var integer Minimum length of a search term
      */
     protected $minLength;
@@ -26,12 +34,12 @@ class SearchManager implements SearcherManagerInterface
     protected $maxEntries;
 
     /**
-     * @var Searchers[] Searchers
+     * @var \Purjus\SearchBundle\Model\SearcherInterface[] Searchers
      */
     protected $searchers = array();
 
     /**
-     * @var Search[] Search results
+     * @var \Purjus\SearchBundle\Entity\Group[] Search results
      */
     protected $results = array();
 
@@ -39,11 +47,13 @@ class SearchManager implements SearcherManagerInterface
     /**
      * Constructor.
      *
+     * @param TraceableEventDispatcher  $dispatcher
      * @param integer $minLength
      * @param integer$maxEntries
      */
-    public function __construct($minLength, $maxEntries)
+    public function __construct(TraceableEventDispatcher $dispatcher, $minLength, $maxEntries)
     {
+        $this->dispatcher = $dispatcher;
         $this->minLength = $minLength;
         $this->maxEntries = $maxEntries;
     }
@@ -63,9 +73,33 @@ class SearchManager implements SearcherManagerInterface
      *
      * @param string $term
      * @param array $options
-     * @return Group[]
+     * @return \Purjus\SearchBundle\Entity\Group[]
      */
-    public function getResults($term, array $options = array())
+    public function search($term, array $options = array())
+    {
+
+        $event = new SearchEvent($term, $options);
+        $this->dispatcher->dispatch(SearchEvent::SEARCH_BEGIN, $event);
+
+        $results = $this->doSearch($term, $options);
+
+        $event->setResults($results); // set result in the event, so we can interact
+        $this->dispatcher->dispatch(SearchEvent::SEARCH_END, $event);
+
+        $this->results = $results;
+
+        return $results;
+
+    }
+
+    /**
+     * Check & call all the searchers.
+     *
+     * @param string $term
+     * @param array $options
+     * @return \Purjus\SearchBundle\Entity\Group[]
+     */
+    protected function doSearch($term, array $options = array())
     {
 
         $results = array();
@@ -77,19 +111,15 @@ class SearchManager implements SearcherManagerInterface
             if (empty($domains) || in_array($searcher->getDomain(), $domains)) {
 
                 $results[] = $searcher->search($term, array_merge(
-                        array('max_entries' => $this->maxEntries,),
-                        $options
-                    )
-                );
+                    array('max_entries' => $this->maxEntries,),
+                    $options,
+                ));
 
             }
 
         }
 
-        $this->results = $results;
-
         return $results;
-
     }
 
 }
