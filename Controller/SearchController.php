@@ -53,10 +53,11 @@ class SearchController extends PurjusTranslatableRESTController
      */
     public function renderBlockSearchAction()
     {
-        return $this->render('PurjusSearchBundle:Block:search.html.twig', array(
-                'form_action' => $this->get('router')->generate('purjus_search_post'),
-                'term' => $this->get('purjus_search.manager')->getTerm(),
-        ));
+        return $this->renderBlockSearch(
+            'PurjusSearchBundle:Block:search.html.twig',
+            'purjus_search_post',
+            array('term' => $this->get('purjus_search.manager')->getTerm())
+        );
     }
 
     /**
