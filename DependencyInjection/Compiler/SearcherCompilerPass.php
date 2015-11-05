@@ -25,11 +25,11 @@ class SearcherCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
 
-        if (false === $container->hasDefinition('purjus_search.manager')) {
+        if (false === $container->has('purjus_search.manager')) {
             return;
         }
 
-        $definition = $container->getDefinition('purjus_search.manager');
+        $definition = $container->findDefinition('purjus_search.manager');
 
         $taggedServices = $container->findTaggedServiceIds('purjus_search.searcher');
 
