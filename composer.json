@@ -5,8 +5,8 @@
     "keywords": ["search", "symfony", "bundle"],
     "require": {
         "symfony/event-dispatcher": "^2.3",
-        "purjus/symfony-bundle": "~1.0",
-        "purjus/admin-bundle": "~1.0"
+        "purjus/symfony-bundle": "dev-develop",
+        "purjus/admin-bundle": "dev-develop"
     },
     "require-dev": {
 		"symfony/var-dumper": "^2.6"
