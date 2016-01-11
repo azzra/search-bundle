@@ -3,12 +3,15 @@
 namespace Purjus\SearchBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Purjus\SearchBundle\Manager\SearchManager;
 use FOS\RestBundle\Controller\Annotations\NoRoute;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\Request\ParamFetcher;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Purjus\AdminBundle\Controller\PurjusTranslatableRESTController;
+
 
 /**
  * Search controller.
@@ -49,7 +52,9 @@ class SearchController extends PurjusTranslatableRESTController
     /**
      * The search block. Get the term from the search manager.
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @NoRoute
+     *
+     * @return Response
      */
     public function renderBlockSearchAction()
     {
@@ -61,29 +66,34 @@ class SearchController extends PurjusTranslatableRESTController
     }
 
     /**
+     * Global search in the website
+     *
      * @Post("search")
-     * @RequestParam(name="term", requirements=".+", allowBlank=false, description="Search term.")
+     * @RequestParam(name="term", requirements="[a-z]", allowBlank=false, description="The term")
+     * @RequestParam(name="domains", requirements=".+", allowBlank=false, nullable=true, description="Domains to be included")
+     *
+     * @ApiDoc()
      *
      * @param Request $request
      * @param ParamFetcher $paramFetcher
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function postSearchAction(Request $request, ParamFetcher $paramFetcher)
     {
 
         $term = $paramFetcher->get('term');
 
-        // if the form is posted, redirect to the GET route witht the term
+        // if the form is posted, redirect to the GET route with the term in the query
         if ('html' === $request->getRequestFormat()) {
             $view = $this->routeRedirectView('purjus_search', array('term' => $term), 301);
             return $this->handleView($view);
         }
 
-        $response = $this->forward('PurjusSearchBundle:Search:search', array(
+        return $this->forward('PurjusSearchBundle:Search:search', array(
+            'request' => $request,
             'term'  => $term,
         ));
 
-        return $response;
     }
 
     /**
