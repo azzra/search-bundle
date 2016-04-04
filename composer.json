@@ -6,7 +6,7 @@
     "require": {
         "symfony/event-dispatcher": "^2.3",
         "purjus/symfony-bundle": "~1.0",
-        "purjus/admin-bundle": "~1.0"
+        "purjus/admin-bundle": "~2.0"
     },
     "require-dev": {
 		"symfony/var-dumper": "^2.6"
@@ -23,7 +23,7 @@
     ],
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0.x-dev"
+            "dev-master": "2.0.x-dev"
         }
     }
 }
