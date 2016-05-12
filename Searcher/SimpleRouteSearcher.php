@@ -1,10 +1,11 @@
 <?php
+
 namespace Purjus\SearchBundle\Searcher;
 
-use Symfony\Component\Routing\Router;
-use Purjus\SearchBundle\Entity\Group;
 use Purjus\SearchBundle\Entity\Entry;
+use Purjus\SearchBundle\Entity\Group;
 use Purjus\SearchBundle\Model\SearcherInterface;
+use Symfony\Component\Routing\Router;
 
 /**
  * Demo searcher, looks in all the route and perform
@@ -12,11 +13,9 @@ use Purjus\SearchBundle\Model\SearcherInterface;
  *
  * @author Purjus Communication
  * @author Tom
- *
  */
 class SimpleRouteSearcher extends PurjusSearcher implements SearcherInterface
 {
-
     /**
      * @var Router Router
      */
@@ -34,38 +33,33 @@ class SimpleRouteSearcher extends PurjusSearcher implements SearcherInterface
         $this->router = $router;
     }
 
-
     /**
      * {@inheritdoc}
      *
      * @see \Purjus\SearchBundle\Model\SearcherInterface::search()
+     *
      * @param string $term
-     * @param array $options
+     * @param array  $options
+     *
      * @return Group
      */
-    public function search($term, array $options = array())
+    public function search($term, array $options = [])
     {
-
         $this->options = $options;
         $group = new Group('Routes', $this->router->generate('homepage'));
 
         $routes = $this->router->getRouteCollection()->all();
 
         foreach ($routes as $name => $route) {
-
             if (stripos($name, $term) !== false) {
-
                 $entry = new Entry($name, $this->router->generate('homepage'));
 
                 if (!$this->addToMax($group, $entry)) {
                     break;
                 }
-
             }
-
         }
 
         return $group;
-
     }
 }

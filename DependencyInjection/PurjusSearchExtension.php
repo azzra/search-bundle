@@ -2,25 +2,23 @@
 
 namespace Purjus\SearchBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * Purjus Search Extension
+ * Purjus Search Extension.
  *
  * @author Purjus Communication
  * @author Tom
- *
  */
 class PurjusSearchExtension extends Extension
 {
-
     /**
      * {@inheritdoc}
      *
-     * @param array $configs
+     * @param array            $configs
      * @param ContainerBuilder $container
      */
     public function load(array $configs, ContainerBuilder $container)

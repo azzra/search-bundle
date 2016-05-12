@@ -3,15 +3,13 @@
 namespace Purjus\SearchBundle\Event;
 
 /**
- * Search events
+ * Search events.
  *
  * @author Purjus Communication
  * @author Tom
- *
  */
 final class PurjusSearchEvents
 {
-
     /**
      * @var string Start of a search
      */
@@ -21,5 +19,4 @@ final class PurjusSearchEvents
      * @var string Search end
      */
     const SEARCH_END = 'purjus_search.end';
-
 }

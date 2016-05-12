@@ -8,11 +8,9 @@ namespace Purjus\SearchBundle\Entity;
  *
  * @author Purjus Communication
  * @author Tom
- *
  */
 class Entry
 {
-
     /**
      * @var string name
      */
@@ -36,18 +34,18 @@ class Entry
     /**
      * @var array options
      */
-    protected $options = array();
+    protected $options = [];
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param string $name name
-     * @param string $link link
+     * @param string $name        name
+     * @param string $link        link
      * @param string $description description
-     * @param string $image image
-     * @param array $options options
+     * @param string $image       image
+     * @param array  $options     options
      */
-    public function __construct($name, $link, $description = null, $image = null, array $options = array())
+    public function __construct($name, $link, $description = null, $image = null, array $options = [])
     {
         $this->name = $name;
         $this->link = $link;
@@ -57,7 +55,7 @@ class Entry
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -67,19 +65,21 @@ class Entry
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return Group
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
     /**
-     * Get link
+     * Get link.
      *
      * @return string
      */
@@ -89,20 +89,21 @@ class Entry
     }
 
     /**
-     * Set link
+     * Set link.
      *
      * @param string $link
-     * @return Group
      *
+     * @return Group
      */
     public function setLink($link)
     {
         $this->link = $link;
+
         return $this;
     }
 
     /**
-     * Get description
+     * Get description.
      *
      * @return string
      */
@@ -112,19 +113,21 @@ class Entry
     }
 
     /**
-     * Set description
+     * Set description.
      *
      * @param string $description
+     *
      * @return Group
      */
     public function setDescription($description)
     {
         $this->description = $description;
+
         return $this;
     }
 
     /**
-     * Get image
+     * Get image.
      *
      * @return string
      */
@@ -134,19 +137,21 @@ class Entry
     }
 
     /**
-     * Set image
+     * Set image.
      *
      * @param string $image
+     *
      * @return Group
      */
     public function setImage($image)
     {
         $this->image = $image;
+
         return $this;
     }
 
     /**
-     * Get options
+     * Get options.
      *
      * @return array
      */
@@ -156,15 +161,16 @@ class Entry
     }
 
     /**
-     * Set options
+     * Set options.
      *
      * @param array $options
+     *
      * @return Group
      */
     public function setOptions($options)
     {
         $this->options = $options;
+
         return $this;
     }
-
 }

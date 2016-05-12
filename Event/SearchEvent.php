@@ -9,11 +9,9 @@ use Purjus\SymfonyBundle\Event\PurjusEvent;
  *
  * @author Purjus Communication
  * @author Tom
- *
  */
 class SearchEvent extends PurjusEvent
 {
-
     /**
      * @var string Start of a search
      */
@@ -37,13 +35,13 @@ class SearchEvent extends PurjusEvent
     /**
      * @var array The results
      */
-    protected $results = array();
+    protected $results = [];
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $term
-     * @param array $config
+     * @param array  $config
      */
     public function __construct($term)
     {
@@ -51,7 +49,7 @@ class SearchEvent extends PurjusEvent
     }
 
     /**
-     * Get term
+     * Get term.
      *
      * @return string
      */
@@ -61,7 +59,7 @@ class SearchEvent extends PurjusEvent
     }
 
     /**
-     * Get config
+     * Get config.
      *
      * @return array
      */
@@ -71,7 +69,7 @@ class SearchEvent extends PurjusEvent
     }
 
     /**
-     * Get results
+     * Get results.
      *
      * @return the array
      */
@@ -81,16 +79,16 @@ class SearchEvent extends PurjusEvent
     }
 
     /**
-     * So we can changes the results is needed
+     * So we can changes the results is needed.
      *
      * @param array $results
+     *
      * @return SearchEvent
      */
     public function setResults(array $results)
     {
         $this->results = $results;
+
         return $this;
     }
-
-
 }
