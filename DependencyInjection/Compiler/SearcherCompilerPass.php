@@ -13,18 +13,16 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author Purjus Communication
  * @author Tom
- *
  */
 class SearcherCompilerPass implements CompilerPassInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param ContainerBuilder $container
      */
     public function process(ContainerBuilder $container)
     {
-
         if (false === $container->has('purjus_search.manager')) {
             return;
         }
@@ -34,7 +32,7 @@ class SearcherCompilerPass implements CompilerPassInterface
         $taggedServices = $container->findTaggedServiceIds('purjus_search.searcher');
 
         foreach ($taggedServices as $id => $attributes) {
-            $definition->addMethodCall('addSearcher', array(new Reference($id)));
+            $definition->addMethodCall('addSearcher', [new Reference($id)]);
         }
     }
 }

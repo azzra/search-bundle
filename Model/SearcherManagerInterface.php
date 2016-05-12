@@ -7,11 +7,9 @@ namespace Purjus\SearchBundle\Model;
  *
  * @author Purjus Communication
  * @author Tom
- *
  */
 interface SearcherManagerInterface
 {
-
     /**
      * Add a searcher.
      *
@@ -23,9 +21,9 @@ interface SearcherManagerInterface
      * Call all the searchers for the search method.
      *
      * @param string $term
-     * @param array $options
+     * @param array  $options
+     *
      * @return Group[]
      */
-    public function search($term, array $options = array());
-
+    public function search($term, array $options = []);
 }

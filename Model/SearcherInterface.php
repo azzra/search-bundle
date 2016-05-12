@@ -7,18 +7,16 @@ namespace Purjus\SearchBundle\Model;
  *
  * @author Purjus Communication
  * @author Tom
- *
  */
 interface SearcherInterface
 {
-
     /**
      * Return the results of a "part" os the whole search.
      *
      * @param string $term
-     * @param array $options
+     * @param array  $options
+     *
      * @return Group
      */
-    public function search($term, array $options = array());
-
+    public function search($term, array $options = []);
 }
